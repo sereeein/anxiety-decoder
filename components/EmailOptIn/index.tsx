@@ -26,12 +26,8 @@ export default function EmailOptIn({ sessionId, hasCatastrophic, onSubmitted }: 
       await fetch(`/api/sessions/${sessionId}/email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({ email: email.trim(), delayDays }),
       });
-      // Also re-call decode endpoint to respect the chosen delayDays.
-      // In this MVP the delay was already defaulted on decode; we could update
-      // the scheduled_for here — deferred to a v1.1 follow-up. For now, the
-      // default 3 days is used and `delayDays` from the UI is informational.
       onSubmitted();
     } finally {
       setBusy(false);

@@ -43,8 +43,16 @@ export async function listBySession(sessionId: string): Promise<WorryItem[]> {
 export async function reclassifyWorry(args: {
   id: string;
   category: WorryCategory;
-}): Promise<WorryItem> {
+}): Promise<{ worry: WorryItem; previousCategory: WorryCategory }> {
   const sb = getServerSupabase();
+  const { data: prev, error: prevErr } = await sb
+    .from('worry_items')
+    .select('category')
+    .eq('id', args.id)
+    .single();
+  if (prevErr) throw prevErr;
+  const previousCategory = (prev as { category: WorryCategory }).category;
+
   const { data, error } = await sb
     .from('worry_items')
     .update({ category: args.category, was_manually_edited: true })
@@ -52,5 +60,5 @@ export async function reclassifyWorry(args: {
     .select('*')
     .single();
   if (error) throw error;
-  return data as WorryItem;
+  return { worry: data as WorryItem, previousCategory };
 }

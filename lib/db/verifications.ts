@@ -40,6 +40,57 @@ export async function createVerification(args: {
   return data as Verification;
 }
 
+export async function existsByWorryItemId(
+  worryItemId: string,
+): Promise<boolean> {
+  const sb = getServerSupabase();
+  const { data, error } = await sb
+    .from('verifications')
+    .select('id')
+    .eq('worry_item_id', worryItemId)
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  return !!data;
+}
+
+export async function deletePendingByWorryItemId(
+  worryItemId: string,
+): Promise<void> {
+  const sb = getServerSupabase();
+  const { error } = await sb
+    .from('verifications')
+    .delete()
+    .eq('worry_item_id', worryItemId)
+    .is('sent_at', null);
+  if (error) throw error;
+}
+
+/**
+ * Update scheduled_for on all unsent verifications belonging to a session.
+ * Called when the user opts in via EmailOptIn with a non-default delayDays.
+ */
+export async function updateScheduledForBySessionId(args: {
+  sessionId: string;
+  scheduledFor: Date;
+}): Promise<void> {
+  const sb = getServerSupabase();
+  // Two-step: query worry_item ids for the session, then bulk-update.
+  const { data: items, error: qErr } = await sb
+    .from('worry_items')
+    .select('id')
+    .eq('session_id', args.sessionId);
+  if (qErr) throw qErr;
+  const ids = (items ?? []).map((r: { id: string }) => r.id);
+  if (ids.length === 0) return;
+  const { error } = await sb
+    .from('verifications')
+    .update({ scheduled_for: args.scheduledFor.toISOString() })
+    .in('worry_item_id', ids)
+    .is('sent_at', null);
+  if (error) throw error;
+}
+
 export async function listDueUnsent(limit = 50): Promise<Verification[]> {
   const sb = getServerSupabase();
   const nowIso = new Date().toISOString();
