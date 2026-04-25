@@ -28,3 +28,12 @@ export async function getOrCreateUserByFingerprint(
   if (insErr) throw insErr;
   return created as AnonymousUser;
 }
+
+export async function setUserEmail(userId: string, email: string): Promise<void> {
+  const sb = getServerSupabase();
+  const { error } = await sb
+    .from('anonymous_users')
+    .update({ email })
+    .eq('id', userId);
+  if (error) throw error;
+}
