@@ -32,11 +32,7 @@ export default function ReturnPage() {
     return (
       <main className="min-h-screen bg-stone-50 flex flex-col items-center justify-center px-6 gap-6">
         <p className="text-2xl text-stone-700">收到。</p>
-        <div className="flex gap-3 text-sm text-stone-500">
-          <a href="/" className="underline">再来一次</a>
-          <span>·</span>
-          <a href="/history" className="underline">看看过往</a>
-        </div>
+        <a href="/" className="text-sm text-stone-500 underline">再来一次</a>
       </main>
     );
   }

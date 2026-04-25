@@ -49,12 +49,6 @@ export default function LandingPage() {
 
   return (
     <main className="min-h-screen bg-stone-50 flex items-center justify-center p-4">
-      <a
-        href="/history"
-        className="fixed top-4 right-4 text-xs text-stone-500 hover:text-stone-700 underline"
-      >
-        过往的解码 →
-      </a>
       <div className="w-full max-w-xl">
         <h1 className="mb-4 text-stone-700 text-lg">你现在在回避什么？</h1>
         <WorryInput onSubmit={submit} busy={busy} />
