@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
+/* LXGW WenKai Lite — handwriting-style Chinese font (~3MB, font-display: swap so page renders first) */
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.7.0/style.css");
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Sage + cream UI palette — illustrations are warm accents on this base */
+  --bg: #F5F2EB;
+  --bg-soft: #EFEAE0;
+  --text: #2E3A35;
+  --text-muted: #7A8480;
+  --card-bg: #FFFFFF;
+  --card-border: #DCE1DB;
+  --input-border: #C7CEC8;
+  --input-border-focus: #4A6B5C;
+
+  --bucket-real: #4A6B5C;
+  --bucket-catastrophic: #A4796E;
+  --bucket-fog: #B5B2AC;
+
+  --accent: #6B8F82;
+  --accent-soft: #B8CFC4;
+  --sparkle: #E5C77F;
+
+  --wand-stick: #5B4636;
+  --wand-star: #7A9D8F;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-input-border: var(--input-border);
+  --color-input-border-focus: var(--input-border-focus);
+  --color-real: var(--bucket-real);
+  --color-catastrophic: var(--bucket-catastrophic);
+  --color-fog: var(--bucket-fog);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-sparkle: var(--sparkle);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-handwriting-en: "Caveat", cursive;
+  --font-handwriting-cn: "LXGW WenKai Lite", "LXGW WenKai", "Kaiti SC", "STKaiti", serif;
+  --font-sans: "LXGW WenKai Lite", "LXGW WenKai", "PingFang SC", "Hiragino Sans GB", system-ui, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* Hide native cursor on devices with hover capability — MagicCursor renders the wand instead */
+@media (hover: hover) and (pointer: fine) {
+  body {
+    cursor: none;
+  }
+  body * {
+    cursor: none;
+  }
+  /* Text inputs keep the I-beam to remain usable */
+  body input,
+  body textarea,
+  body [contenteditable="true"] {
+    cursor: text;
+  }
+}
+
+.font-handwriting-en {
+  font-family: var(--font-handwriting-en);
+}
+
+.font-handwriting-cn {
+  font-family: var(--font-handwriting-cn);
 }
