@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { exampleAnxieties } from '@/data/exampleAnxieties';
 
 const DRAFT_KEY = 'anxiety_decoder_draft';
 const DEBOUNCE_MS = 2000;
@@ -47,6 +48,20 @@ export default function WorryInput({ onSubmit, busy }: WorryInputProps) {
         disabled={busy}
         className="w-full rounded-md border border-stone-300 bg-white p-4 text-base leading-relaxed text-stone-800 outline-none focus:border-stone-500 disabled:opacity-50"
       />
+      <div className="flex flex-wrap gap-2 items-center">
+        <span className="text-xs text-stone-500">没思路？试试：</span>
+        {exampleAnxieties.map((ex, i) => (
+          <button
+            type="button"
+            key={i}
+            onClick={() => setText(ex)}
+            className="text-xs text-stone-600 underline hover:text-stone-800 disabled:opacity-50"
+            disabled={busy}
+          >
+            例 {i + 1}
+          </button>
+        ))}
+      </div>
       <div className="flex items-center justify-between">
         <p className="text-xs text-stone-500">
           你写的东西只用来帮你解码这一次。原文 30 天后自动删除。
