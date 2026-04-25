@@ -1,0 +1,5 @@
+supabase/
+docs/
+tests/
+*.md
+.env.local*
