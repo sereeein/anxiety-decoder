@@ -608,7 +608,7 @@ Call1 DeepSeek 1.5s → Call2 Haiku 3s → [用户] → Call3a DeepSeek 1.5s
 
 ## Live demo
 
-[Production URL pending Vercel deploy]
+https://anxiety-decoder.vercel.app
 
 ## 项目仓库
 
