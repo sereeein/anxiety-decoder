@@ -12,5 +12,4 @@ export function getResendClient(): Resend {
   return client;
 }
 
-export const FROM_ADDRESS = 'Anxiety Decoder <onboarding@resend.dev>';
-// Replace with your verified domain in Plan 4 before production.
+export const FROM_ADDRESS = 'Anxiety Decoder <hi@anx-flyfly.com>';
