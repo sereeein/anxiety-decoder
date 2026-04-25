@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import CatFrame from '@/components/CatFrame';
 import { pickQuote, type PickedQuote } from '@/lib/core/quoteSelector';
 import { pushQuoteHistory, readQuoteHistory } from '@/lib/quoteHistory';
 
@@ -55,20 +56,25 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
     >
       {picked && (
         <>
-          <Image
-            src="/illustrations/01-opening-ritual.png"
-            alt="一只小猫安静地盘腿坐着，闭着眼睛"
-            width={400}
-            height={533}
-            priority
-            className={`cat-soft-mask w-48 md:w-64 h-auto transition-opacity ${
+          <CatFrame
+            seed={1}
+            className={`w-48 md:w-64 transition-opacity ${
               reducedMotion
                 ? 'opacity-100'
                 : phase === 'hold'
                 ? 'opacity-100 duration-700'
                 : 'opacity-0 duration-500'
             }`}
-          />
+          >
+            <Image
+              src="/illustrations/01-opening-ritual.png"
+              alt="一只小猫安静地盘腿坐着，闭着眼睛"
+              width={400}
+              height={533}
+              priority
+              className="cat-soft-mask w-full h-auto"
+            />
+          </CatFrame>
           <p
             className={`font-handwriting-cn max-w-md px-6 text-center text-3xl leading-relaxed transition-opacity ${
               reducedMotion

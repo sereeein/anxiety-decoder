@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import CatFrame from '@/components/CatFrame';
 import DecodeCard, { type DecodeCardWorry } from '@/components/DecodeCard';
 import EmailOptIn from '@/components/EmailOptIn';
 import FlipCard from '@/components/FlipCard';
@@ -94,14 +95,16 @@ export default function ResultPage() {
   }
 
   const catImage = (
-    <Image
-      src="/illustrations/02-decode-card.png"
-      alt="一只白色小猫专注地看着三张小色卡"
-      width={400}
-      height={400}
-      priority
-      className="cat-soft-mask w-56 md:w-64 h-auto"
-    />
+    <CatFrame seed={2} className="w-56 md:w-64">
+      <Image
+        src="/illustrations/02-decode-card.png"
+        alt="一只白色小猫专注地看着三张小色卡"
+        width={400}
+        height={400}
+        priority
+        className="cat-soft-mask w-full h-auto"
+      />
+    </CatFrame>
   );
 
   if (!data || !data.card_headline || !data.primary_action) {

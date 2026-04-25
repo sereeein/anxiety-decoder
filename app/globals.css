@@ -77,18 +77,17 @@ body {
   font-family: var(--font-handwriting-cn);
 }
 
-/* Hand-drawn-ish soft erased edges for the cat illustrations.
- * Radial gradient does the overall fade; the inner stop is held large
- * so the cat's body is fully opaque, while the outer ~40% of the
- * bounding box dissolves into the page bg. */
+/* Strong dissolve mask — fades the cat PNG's rectangular edge into the bg.
+ * The CatFrame SVG overlay then draws crayon scribbles over the transition
+ * for a "hand-drawn frame" feel. Used together; mask softens the underlying
+ * rectangle, scribbles add the visible hand-drawn character. */
 .cat-soft-mask {
-  -webkit-mask-image: radial-gradient(ellipse 78% 82% at center, black 55%, transparent 92%);
-  mask-image: radial-gradient(ellipse 78% 82% at center, black 55%, transparent 92%);
+  -webkit-mask-image: radial-gradient(ellipse 72% 76% at center, black 45%, transparent 88%);
+  mask-image: radial-gradient(ellipse 72% 76% at center, black 45%, transparent 88%);
 }
 
-/* Looser variant used for the wide history banner so the long sides
- * fade too (the default ellipse mostly fades the corners). */
+/* Wider variant for the horizontal history banner — fades the long sides too. */
 .cat-soft-mask-banner {
-  -webkit-mask-image: radial-gradient(ellipse 70% 78% at center, black 45%, transparent 96%);
-  mask-image: radial-gradient(ellipse 70% 78% at center, black 45%, transparent 96%);
+  -webkit-mask-image: radial-gradient(ellipse 64% 72% at center, black 38%, transparent 92%);
+  mask-image: radial-gradient(ellipse 64% 72% at center, black 38%, transparent 92%);
 }

@@ -1,16 +1,19 @@
 // app/not-found.tsx
 import Image from 'next/image';
+import CatFrame from '@/components/CatFrame';
 
 export default function NotFound() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 gap-6">
-      <Image
-        src="/illustrations/06-not-found.png"
-        alt="一只黑色小猫望着天上的云"
-        width={400}
-        height={400}
-        className="cat-soft-mask w-48 md:w-56 h-auto"
-      />
+      <CatFrame seed={6} className="w-48 md:w-56">
+        <Image
+          src="/illustrations/06-not-found.png"
+          alt="一只黑色小猫望着天上的云"
+          width={400}
+          height={400}
+          className="cat-soft-mask w-full h-auto"
+        />
+      </CatFrame>
       <p className="font-handwriting-cn text-2xl text-[var(--text)]">
         这里没有内容。
       </p>
