@@ -76,18 +76,3 @@ body {
 .font-handwriting-cn {
   font-family: var(--font-handwriting-cn);
 }
-
-/* Strong dissolve mask — fades the cat PNG's rectangular edge into the bg.
- * The CatFrame SVG overlay then draws crayon scribbles over the transition
- * for a "hand-drawn frame" feel. Used together; mask softens the underlying
- * rectangle, scribbles add the visible hand-drawn character. */
-.cat-soft-mask {
-  -webkit-mask-image: radial-gradient(ellipse 72% 76% at center, black 45%, transparent 88%);
-  mask-image: radial-gradient(ellipse 72% 76% at center, black 45%, transparent 88%);
-}
-
-/* Wider variant for the horizontal history banner — fades the long sides too. */
-.cat-soft-mask-banner {
-  -webkit-mask-image: radial-gradient(ellipse 64% 72% at center, black 38%, transparent 92%);
-  mask-image: radial-gradient(ellipse 64% 72% at center, black 38%, transparent 92%);
-}
