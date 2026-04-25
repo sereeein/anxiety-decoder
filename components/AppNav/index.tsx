@@ -6,23 +6,26 @@ import { usePathname } from 'next/navigation';
 
 export default function AppNav() {
   const pathname = usePathname();
+  const links: { href: string; label: string }[] = [];
+  if (pathname !== '/') links.push({ href: '/', label: '首页' });
+  if (pathname !== '/history') links.push({ href: '/history', label: '过往' });
+  if (pathname !== '/settings/data') links.push({ href: '/settings/data', label: '数据' });
+
   return (
-    <nav className="fixed top-4 right-4 flex gap-3 text-xs text-stone-500">
-      {pathname !== '/' && (
-        <Link href="/" className="underline hover:text-stone-700">
-          首页
-        </Link>
-      )}
-      {pathname !== '/history' && (
-        <Link href="/history" className="underline hover:text-stone-700">
-          过往
-        </Link>
-      )}
-      {pathname !== '/settings/data' && (
-        <Link href="/settings/data" className="underline hover:text-stone-700">
-          数据
-        </Link>
-      )}
+    <nav className="font-handwriting-cn fixed top-4 right-4 flex items-center gap-2 text-sm text-[var(--text-muted)]">
+      {links.map((link, i) => (
+        <span key={link.href} className="flex items-center gap-2">
+          <Link
+            href={link.href}
+            className="hover:text-[var(--text)] transition-colors duration-150"
+          >
+            {link.label}
+          </Link>
+          {i < links.length - 1 && (
+            <span aria-hidden="true" className="text-[var(--input-border)]">·</span>
+          )}
+        </span>
+      ))}
     </nav>
   );
 }

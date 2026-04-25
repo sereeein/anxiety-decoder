@@ -50,11 +50,11 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
       type="button"
       aria-label="跳过"
       onClick={onComplete}
-      className="fixed inset-0 flex items-center justify-center bg-stone-50 text-stone-700 cursor-default"
+      className="fixed inset-0 flex items-center justify-center bg-[var(--bg)] text-[var(--text)] cursor-default"
     >
       {picked && (
         <p
-          className={`max-w-md px-6 text-center text-2xl font-medium leading-relaxed transition-opacity ${
+          className={`font-handwriting-cn max-w-md px-6 text-center text-3xl leading-relaxed transition-opacity ${
             reducedMotion
               ? 'opacity-100'
               : phase === 'hold'
@@ -65,6 +65,7 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
           {picked.quote}
         </p>
       )}
+      <span className="sr-only">跳过</span>
     </button>
   );
 }

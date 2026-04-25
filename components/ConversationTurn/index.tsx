@@ -10,10 +10,10 @@ export default function ConversationTurn({ role, content }: ConversationTurnProp
   return (
     <div className={`flex ${isAssistant ? 'justify-start' : 'justify-end'}`}>
       <div
-        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+        className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed transition-all duration-200 ${
           isAssistant
-            ? 'bg-stone-100 text-stone-800'
-            : 'bg-stone-800 text-stone-50'
+            ? 'bg-[var(--card-bg)] text-[var(--text)] border-2 border-[var(--card-border)]'
+            : 'bg-[var(--accent-soft)] text-[var(--text)]'
         }`}
       >
         {content}

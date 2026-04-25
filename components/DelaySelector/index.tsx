@@ -16,13 +16,13 @@ export default function DelaySelector({ value, onChange }: DelaySelectorProps) {
           type="button"
           key={d}
           onClick={() => onChange(d)}
-          className={`rounded-full px-3 py-1 text-xs transition ${
+          className={`rounded-full px-4 py-1 text-xs hover:-translate-y-0.5 active:scale-95 transition-all duration-150 ${
             value === d
-              ? 'bg-stone-800 text-white'
-              : 'bg-white border border-stone-300 text-stone-700 hover:bg-stone-50'
+              ? 'bg-[var(--accent)] text-white'
+              : 'bg-[var(--card-bg)] border-2 border-[var(--card-border)] text-[var(--text-muted)] hover:text-[var(--text)]'
           }`}
         >
-          {d} 天后
+          <span className="font-handwriting-en text-sm mr-1">{d}</span>天后
         </button>
       ))}
     </div>

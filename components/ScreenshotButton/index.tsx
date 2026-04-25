@@ -24,7 +24,7 @@ export default function ScreenshotButton({
       if (!node) return;
       const dataUrl = await toPng(node, {
         pixelRatio: 2,
-        backgroundColor: '#fafaf9',
+        backgroundColor: '#DCE3CB',
       });
       const a = document.createElement('a');
       a.href = dataUrl;
@@ -39,7 +39,7 @@ export default function ScreenshotButton({
     <button
       type="button"
       onClick={handleExport}
-      className="rounded-full border border-stone-300 bg-white px-4 py-2 text-xs text-stone-700 hover:border-stone-400"
+      className="text-xs text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150"
     >
       保存图片
     </button>

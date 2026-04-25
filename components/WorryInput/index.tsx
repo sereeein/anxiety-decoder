@@ -58,16 +58,16 @@ export default function WorryInput({
         placeholder={placeholder}
         rows={6}
         disabled={busy}
-        className="w-full rounded-md border border-stone-300 bg-white p-4 text-base leading-relaxed text-stone-800 outline-none focus:border-stone-500 disabled:opacity-50"
+        className="w-full rounded-xl bg-white border-2 border-[var(--input-border)] focus:border-[var(--input-border-focus)] outline-none transition-colors duration-150 p-4 text-base leading-relaxed text-[var(--text)] disabled:opacity-50"
       />
       <div className="flex flex-wrap gap-2 items-center">
-        <span className="text-xs text-stone-500">没思路？试试：</span>
+        <span className="text-xs text-[var(--text-muted)]">没思路？试试：</span>
         {exampleAnxieties.map((ex, i) => (
           <button
             type="button"
             key={i}
             onClick={() => setText(ex)}
-            className="text-xs text-stone-600 underline hover:text-stone-800 disabled:opacity-50"
+            className="text-xs text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150 disabled:opacity-50"
             disabled={busy}
           >
             例 {i + 1}
@@ -75,12 +75,12 @@ export default function WorryInput({
         ))}
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-xs text-stone-500">{privacyLine}</p>
+        <p className="text-xs text-[var(--text-muted)]">{privacyLine}</p>
         <button
           type="button"
           onClick={handleSubmit}
           disabled={busy || text.trim().length === 0}
-          className="rounded-md bg-stone-800 px-4 py-2 text-sm text-white hover:bg-stone-700 disabled:opacity-40"
+          className="rounded-full bg-[var(--accent)] text-white px-6 py-2 text-sm hover:bg-[var(--input-border-focus)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-40 disabled:hover:translate-y-0"
         >
           {busy ? '解码中…' : '开始解码'}
         </button>

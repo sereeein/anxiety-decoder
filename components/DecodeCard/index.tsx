@@ -34,19 +34,19 @@ export default function DecodeCard({
   const fog = worries.filter((w) => w.category === 'fog');
 
   return (
-    <article className="rounded-2xl bg-white p-6 shadow-sm border border-stone-200 flex flex-col gap-6">
+    <article className="rounded-3xl bg-[var(--card-bg)] p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 border-2 border-[var(--card-border)] flex flex-col gap-6">
       <header>
-        <h2 className="text-xl font-medium text-stone-800 leading-snug">{headline}</h2>
+        <h2 className="font-handwriting-cn text-2xl text-[var(--text)] leading-snug">{headline}</h2>
       </header>
 
-      <section className="rounded-xl bg-emerald-50 border border-emerald-100 p-4 flex flex-col gap-3">
-        <h3 className="text-sm font-medium text-emerald-800">🟢 真正要做的</h3>
+      <section className="rounded-2xl bg-[var(--accent-soft)] border-2 border-[var(--card-border)] p-4 flex flex-col gap-3">
+        <h3 className="text-sm font-medium text-[var(--bucket-real)]">🟢 真正要做的</h3>
         <ul className="flex flex-col gap-2">
           {real.map((w) => (
-            <li key={w.id} className="flex items-start gap-2 text-sm text-stone-800">
+            <li key={w.id} className="flex items-start gap-2 text-sm text-[var(--text)]">
               <span className="flex-1">{w.content}</span>
               {readOnly ? (
-                <span className="rounded-full border border-stone-300 bg-white px-2 py-1 text-xs text-stone-700">
+                <span className="rounded-full border border-[var(--card-border)] bg-white px-2 py-1 text-xs text-[var(--text)]">
                   {w.category === 'real' ? '🟢 真问题' : w.category === 'catastrophic' ? '🟡 灾难化' : '⚪ 雾'}
                 </span>
               ) : (
@@ -58,16 +58,16 @@ export default function DecodeCard({
             </li>
           ))}
         </ul>
-        <div className="mt-2 rounded-lg bg-white border border-emerald-200 p-3">
-          <p className="text-xs text-emerald-700 mb-1">现在 5 分钟内能做的：</p>
-          <p className="text-sm text-stone-800">{primaryAction}</p>
+        <div className="mt-2 rounded-xl bg-white border-2 border-[var(--card-border)] p-3">
+          <p className="text-xs text-[var(--bucket-real)] mb-1">现在 5 分钟内能做的：</p>
+          <p className="text-sm text-[var(--text)]">{primaryAction}</p>
         </div>
         {!readOnly && (
           <button
             type="button"
             onClick={onLaunch}
             disabled={launchBusy}
-            className="self-start rounded-full bg-emerald-700 px-5 py-2 text-sm text-white hover:bg-emerald-600 disabled:opacity-50"
+            className="self-start rounded-full bg-[var(--accent)] text-white px-6 py-2 text-sm hover:bg-[var(--input-border-focus)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:hover:translate-y-0"
           >
             {launchBusy ? '准备中…' : '现在做 5 分钟'}
           </button>
@@ -75,14 +75,14 @@ export default function DecodeCard({
       </section>
 
       {catastrophic.length > 0 && (
-        <section className="rounded-xl bg-amber-50 border border-amber-100 p-3 flex flex-col gap-2">
-          <h3 className="text-xs text-amber-800">🟡 灾难化想象（已记下，不在此刻处理）</h3>
+        <section className="rounded-2xl bg-[#E8D5CE] border-2 border-[#D4B7AB] p-3 flex flex-col gap-2">
+          <h3 className="text-xs text-[var(--bucket-catastrophic)]">🟡 灾难化想象（已记下，不在此刻处理）</h3>
           <ul className="flex flex-col gap-1">
             {catastrophic.map((w) => (
-              <li key={w.id} className="flex items-start gap-2 text-xs text-stone-700">
+              <li key={w.id} className="flex items-start gap-2 text-xs text-[var(--text)]">
                 <span className="flex-1">{w.content}</span>
                 {readOnly ? (
-                  <span className="rounded-full border border-stone-300 bg-white px-2 py-1 text-xs text-stone-700">
+                  <span className="rounded-full border border-[var(--card-border)] bg-white px-2 py-1 text-xs text-[var(--text)]">
                     {w.category === 'real' ? '🟢 真问题' : w.category === 'catastrophic' ? '🟡 灾难化' : '⚪ 雾'}
                   </span>
                 ) : (
@@ -98,14 +98,14 @@ export default function DecodeCard({
       )}
 
       {fog.length > 0 && (
-        <section className="rounded-xl bg-stone-50 border border-stone-200 p-3 flex flex-col gap-2">
-          <h3 className="text-xs text-stone-600">⚪ 说不清的雾（已存档）</h3>
+        <section className="rounded-2xl bg-[#E0DDD7] border-2 border-[#C9C5BD] p-3 flex flex-col gap-2">
+          <h3 className="text-xs text-[var(--bucket-fog)]">⚪ 说不清的雾（已存档）</h3>
           <ul className="flex flex-col gap-1">
             {fog.map((w) => (
-              <li key={w.id} className="flex items-start gap-2 text-xs text-stone-600">
+              <li key={w.id} className="flex items-start gap-2 text-xs text-[var(--text-muted)]">
                 <span className="flex-1">{w.content}</span>
                 {readOnly ? (
-                  <span className="rounded-full border border-stone-300 bg-white px-2 py-1 text-xs text-stone-700">
+                  <span className="rounded-full border border-[var(--card-border)] bg-white px-2 py-1 text-xs text-[var(--text)]">
                     {w.category === 'real' ? '🟢 真问题' : w.category === 'catastrophic' ? '🟡 灾难化' : '⚪ 雾'}
                   </span>
                 ) : (
