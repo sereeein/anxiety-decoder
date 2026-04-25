@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import DecodeCard, { type DecodeCardWorry } from '@/components/DecodeCard';
+import EmailOptIn from '@/components/EmailOptIn';
 import type { WorryCategory } from '@/lib/db/worryItems';
 
 interface SessionPayload {
@@ -90,6 +91,11 @@ export default function ResultPage() {
           onReclassify={handleReclassify}
           onLaunch={handleLaunch}
           launchBusy={launchBusy}
+        />
+        <EmailOptIn
+          sessionId={sessionId}
+          hasCatastrophic={data.worries.some((w) => w.category === 'catastrophic')}
+          onSubmitted={() => { /* no-op; component hides itself */ }}
         />
       </div>
     </main>
