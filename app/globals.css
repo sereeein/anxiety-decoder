@@ -76,3 +76,19 @@ body {
 .font-handwriting-cn {
   font-family: var(--font-handwriting-cn);
 }
+
+/* Hand-drawn-ish soft erased edges for the cat illustrations.
+ * Radial gradient does the overall fade; the inner stop is held large
+ * so the cat's body is fully opaque, while the outer ~40% of the
+ * bounding box dissolves into the page bg. */
+.cat-soft-mask {
+  -webkit-mask-image: radial-gradient(ellipse 78% 82% at center, black 55%, transparent 92%);
+  mask-image: radial-gradient(ellipse 78% 82% at center, black 55%, transparent 92%);
+}
+
+/* Looser variant used for the wide history banner so the long sides
+ * fade too (the default ellipse mostly fades the corners). */
+.cat-soft-mask-banner {
+  -webkit-mask-image: radial-gradient(ellipse 70% 78% at center, black 45%, transparent 96%);
+  mask-image: radial-gradient(ellipse 70% 78% at center, black 45%, transparent 96%);
+}

@@ -61,7 +61,7 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
             width={400}
             height={533}
             priority
-            className={`w-48 md:w-64 h-auto transition-opacity ${
+            className={`cat-soft-mask w-48 md:w-64 h-auto transition-opacity ${
               reducedMotion
                 ? 'opacity-100'
                 : phase === 'hold'

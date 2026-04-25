@@ -44,7 +44,7 @@ export default function HistoryPage() {
           alt="一只白色小猫坐在三只玻璃罐旁边"
           width={600}
           height={400}
-          className="w-full max-w-md mx-auto md:max-w-lg h-auto"
+          className="cat-soft-mask-banner w-full max-w-md mx-auto md:max-w-lg h-auto"
         />
         <header className="flex flex-col gap-2">
           <h1 className="font-handwriting-cn text-3xl md:text-4xl text-[var(--text)]">

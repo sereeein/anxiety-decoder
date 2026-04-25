@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import DecodeCard, { type DecodeCardWorry } from '@/components/DecodeCard';
 import EmailOptIn from '@/components/EmailOptIn';
+import FlipCard from '@/components/FlipCard';
 import RetryError from '@/components/RetryError';
 import type { WorryCategory } from '@/lib/db/worryItems';
 import { retryOnce } from '@/lib/retry';
@@ -16,6 +17,8 @@ interface SessionPayload {
   worries: DecodeCardWorry[];
 }
 
+const AUTO_FLIP_DELAY_MS = 900;
+
 export default function ResultPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const router = useRouter();
@@ -23,6 +26,7 @@ export default function ResultPage() {
   const [error, setError] = useState<string | null>(null);
   const [launchError, setLaunchError] = useState<string | null>(null);
   const [launchBusy, setLaunchBusy] = useState(false);
+  const [showCard, setShowCard] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,6 +45,13 @@ export default function ResultPage() {
       cancelled = true;
     };
   }, [sessionId]);
+
+  useEffect(() => {
+    if (data && data.card_headline && data.primary_action && !showCard) {
+      const t = setTimeout(() => setShowCard(true), AUTO_FLIP_DELAY_MS);
+      return () => clearTimeout(t);
+    }
+  }, [data, showCard]);
 
   const handleReclassify = async (worryId: string, next: WorryCategory) => {
     if (!data) return;
@@ -81,10 +92,25 @@ export default function ResultPage() {
       </main>
     );
   }
+
+  const catImage = (
+    <Image
+      src="/illustrations/02-decode-card.png"
+      alt="一只白色小猫专注地看着三张小色卡"
+      width={400}
+      height={400}
+      priority
+      className="cat-soft-mask w-56 md:w-64 h-auto"
+    />
+  );
+
   if (!data || !data.card_headline || !data.primary_action) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-6 py-10">
-        <p className="font-handwriting-cn text-xl text-[var(--text-muted)]">解码中…</p>
+      <main className="min-h-screen flex flex-col items-center justify-center px-6 py-10">
+        {catImage}
+        <p className="font-handwriting-cn text-xl text-[var(--text-muted)] mt-6">
+          解码中…
+        </p>
       </main>
     );
   }
@@ -92,20 +118,20 @@ export default function ResultPage() {
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-10">
       <div className="w-full max-w-2xl flex flex-col gap-8">
-        <Image
-          src="/illustrations/02-decode-card.png"
-          alt="一只白色小猫专注地看着三张小色卡"
-          width={400}
-          height={400}
-          className="w-56 md:w-64 h-auto mx-auto"
-        />
-        <DecodeCard
-          headline={data.card_headline}
-          primaryAction={data.primary_action}
-          worries={data.worries}
-          onReclassify={handleReclassify}
-          onLaunch={handleLaunch}
-          launchBusy={launchBusy}
+        <FlipCard
+          showBack={showCard}
+          onToggle={() => setShowCard((s) => !s)}
+          front={catImage}
+          back={
+            <DecodeCard
+              headline={data.card_headline}
+              primaryAction={data.primary_action}
+              worries={data.worries}
+              onReclassify={handleReclassify}
+              onLaunch={handleLaunch}
+              launchBusy={launchBusy}
+            />
+          }
         />
         {launchError && (
           <RetryError message={launchError} onRetry={handleLaunch} busy={launchBusy} />
@@ -113,7 +139,9 @@ export default function ResultPage() {
         <EmailOptIn
           sessionId={sessionId}
           hasCatastrophic={data.worries.some((w) => w.category === 'catastrophic')}
-          onSubmitted={() => { /* no-op; component hides itself */ }}
+          onSubmitted={() => {
+            /* no-op; component hides itself */
+          }}
         />
       </div>
     </main>

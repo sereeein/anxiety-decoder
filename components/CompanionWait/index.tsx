@@ -18,7 +18,7 @@ export default function CompanionWait({ copy, onReturn, returnBusy }: CompanionW
         width={400}
         height={533}
         priority
-        className="w-56 md:w-64 h-auto"
+        className="cat-soft-mask w-56 md:w-64 h-auto"
       />
       <p className="font-handwriting-cn max-w-md text-center text-3xl leading-relaxed text-[var(--text)]">
         {copy ?? '去吧，我在这里等你回来。'}

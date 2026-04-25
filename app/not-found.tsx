@@ -9,7 +9,7 @@ export default function NotFound() {
         alt="一只黑色小猫望着天上的云"
         width={400}
         height={400}
-        className="w-48 md:w-56 h-auto"
+        className="cat-soft-mask w-48 md:w-56 h-auto"
       />
       <p className="font-handwriting-cn text-2xl text-[var(--text)]">
         这里没有内容。

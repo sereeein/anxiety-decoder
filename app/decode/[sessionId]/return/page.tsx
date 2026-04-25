@@ -37,7 +37,7 @@ export default function ReturnPage() {
           alt="一只橘色小猫舒展身体，旁边一只蓝色茶杯"
           width={400}
           height={533}
-          className="w-56 md:w-64 h-auto"
+          className="cat-soft-mask w-56 md:w-64 h-auto"
         />
         <p className="font-handwriting-cn text-3xl text-[var(--text)]">收到。</p>
         <a
@@ -59,7 +59,7 @@ export default function ReturnPage() {
           width={400}
           height={533}
           priority
-          className="w-56 md:w-64 h-auto mx-auto"
+          className="cat-soft-mask w-56 md:w-64 h-auto mx-auto"
         />
         <p className="font-handwriting-cn text-center text-2xl md:text-3xl text-[var(--text)]">
           刚才怎么样？
