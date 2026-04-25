@@ -37,3 +37,16 @@ export async function setUserEmail(userId: string, email: string): Promise<void>
     .eq('id', userId);
   if (error) throw error;
 }
+
+/**
+ * Delete the anonymous_users row for this fingerprint.
+ * ON DELETE CASCADE removes decode_sessions → worry_items → verifications → return_feedback.
+ */
+export async function purgeAllForFingerprint(fingerprint: string): Promise<void> {
+  const sb = getServerSupabase();
+  const { error } = await sb
+    .from('anonymous_users')
+    .delete()
+    .eq('fingerprint', fingerprint);
+  if (error) throw error;
+}
