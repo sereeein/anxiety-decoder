@@ -117,8 +117,12 @@ Production URL: https://anxiety-decoder.vercel.app
 | opt-in 邮箱 | ≥6 | |
 | 已响应验证 | ≥3 | |
 
-5 项全中 → 写 retrospective 进本文档底部，进 Phase 5。
-有项未中 → 按 spec §19.4 漏斗定位卡点：
+**Phase 5 启动条件**：5 项指标至少 **3 项达标** → 视为冷启动证明产品命题站得住，可正式排定 Phase 5（迭代优先级由"哪一项指标最弱"决定）。
+- 5 项全中 → 写 retrospective 进本文档底部，进 Phase 5
+- 3-4 项达标 → Phase 5 优先级聚焦在未达标的那 1-2 项；retrospective 必须明写"为什么这项没达标"
+- ≤ 2 项达标 → 不进 Phase 5，回到 §1.2 命题层重新审视产品定位（可能需要换用户群 / 换价值主张）
+
+**未中项的对应卡点诊断**（spec §19.4 漏斗）：
 - Landing 提交率低 → F2 视觉 / Landing copy 再调
 - 解码完成率低 → AI prompt 调优（F1）
 - 留存低 → 核心体验调（result 页 / EvidenceStats 还需打磨）
