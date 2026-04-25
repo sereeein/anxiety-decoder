@@ -89,12 +89,14 @@ export default function ConversationPage() {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 p-4">
-      <div className="mx-auto max-w-xl flex flex-col gap-3">
-        {messages.map((m, i) => (
-          <ConversationTurn key={i} role={m.role} content={m.content} />
-        ))}
-        <div className="mt-4 flex flex-col gap-2">
+    <main className="min-h-screen flex flex-col items-center px-6 py-10">
+      <div className="w-full max-w-2xl flex flex-col gap-8">
+        <div className="flex flex-col gap-4">
+          {messages.map((m, i) => (
+            <ConversationTurn key={i} role={m.role} content={m.content} />
+          ))}
+        </div>
+        <div className="rounded-2xl bg-[var(--card-bg)] border-2 border-[var(--card-border)] p-4 flex flex-col gap-3">
           <textarea
             value={reply}
             onChange={(e) => setReply(e.target.value)}
@@ -104,13 +106,13 @@ export default function ConversationPage() {
             placeholder="继续说…"
             rows={3}
             disabled={busy}
-            className="w-full rounded-md border border-stone-300 bg-white p-3 text-sm leading-relaxed outline-none focus:border-stone-500 disabled:opacity-50"
+            className="w-full rounded-xl bg-white border-2 border-[var(--input-border)] focus:border-[var(--input-border-focus)] outline-none transition-colors duration-150 p-3 text-base leading-relaxed text-[var(--text)] disabled:opacity-50"
           />
           <button
             type="button"
             onClick={handleSend}
             disabled={busy || reply.trim().length === 0}
-            className="self-end rounded-md bg-stone-800 px-4 py-2 text-sm text-white hover:bg-stone-700 disabled:opacity-40"
+            className="self-end rounded-full bg-[var(--accent)] text-white px-6 py-2 text-sm hover:bg-[var(--input-border-focus)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-40 disabled:hover:translate-y-0"
           >
             {busy ? '处理中…' : '继续'}
           </button>

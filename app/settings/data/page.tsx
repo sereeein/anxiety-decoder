@@ -78,25 +78,29 @@ export default function DataCockpitPage() {
   };
 
   return (
-    <main className="min-h-screen bg-stone-50 p-4">
-      <div className="mx-auto max-w-xl flex flex-col gap-6">
-        <header>
-          <h1 className="text-xl font-medium text-stone-800">数据管理</h1>
-          <p className="text-xs text-stone-500 mt-2">
+    <main className="min-h-screen flex flex-col items-center px-6 py-10">
+      <div className="w-full max-w-2xl flex flex-col gap-8">
+        <header className="flex flex-col gap-2">
+          <h1 className="font-handwriting-cn text-3xl md:text-4xl text-[var(--text)]">
+            数据管理
+          </h1>
+          <p className="text-sm text-[var(--text-muted)]">
             我们存了什么、存多久、为什么存 —— 这里全部透明。
           </p>
         </header>
 
-        <section className="rounded-xl border border-stone-200 bg-white p-4">
-          <h2 className="text-sm font-medium text-stone-700 mb-2">当前浏览器存储</h2>
-          <dl className="text-sm text-stone-700 space-y-1">
+        <section className="rounded-2xl border-2 border-[var(--card-border)] bg-[var(--card-bg)] p-6 flex flex-col gap-3">
+          <h2 className="font-handwriting-cn text-xl text-[var(--text)]">
+            当前浏览器存储
+          </h2>
+          <dl className="text-sm text-[var(--text)] space-y-1">
             <div>
-              <dt className="inline text-stone-500">解码次数：</dt>
+              <dt className="inline text-[var(--text-muted)]">解码次数：</dt>
               <dd className="inline">{sessionCount ?? '…'}</dd>
             </div>
             <div>
-              <dt className="inline text-stone-500">fingerprint：</dt>
-              <dd className="inline font-mono text-xs">
+              <dt className="inline text-[var(--text-muted)]">fingerprint：</dt>
+              <dd className="inline font-mono text-xs break-all">
                 {typeof window !== 'undefined'
                   ? localStorage.getItem(FINGERPRINT_KEY) ?? ''
                   : ''}
@@ -105,14 +109,16 @@ export default function DataCockpitPage() {
           </dl>
         </section>
 
-        <section className="rounded-xl border border-stone-200 bg-white p-4 flex flex-col gap-3">
-          <h2 className="text-sm font-medium text-stone-700">导出 / 删除</h2>
-          <div className="flex gap-2">
+        <section className="rounded-2xl border-2 border-[var(--card-border)] bg-[var(--card-bg)] p-6 flex flex-col gap-4">
+          <h2 className="font-handwriting-cn text-xl text-[var(--text)]">
+            导出 / 删除
+          </h2>
+          <div className="flex flex-wrap gap-3">
             <button
               type="button"
               onClick={handleExport}
               disabled={busy}
-              className="rounded-md bg-white border border-stone-300 px-4 py-2 text-sm text-stone-700 hover:border-stone-400 disabled:opacity-50"
+              className="rounded-full bg-white border-2 border-[var(--input-border)] hover:border-[var(--input-border-focus)] px-5 py-2 text-sm text-[var(--text)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:hover:translate-y-0"
             >
               导出我的全部数据（JSON）
             </button>
@@ -120,23 +126,29 @@ export default function DataCockpitPage() {
               type="button"
               onClick={handlePurge}
               disabled={busy}
-              className="rounded-md bg-rose-700 px-4 py-2 text-sm text-white hover:bg-rose-600 disabled:opacity-50"
+              className="rounded-full bg-[var(--bucket-catastrophic)] text-white px-5 py-2 text-sm hover:opacity-90 hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:hover:translate-y-0"
             >
               删除我的全部数据
             </button>
           </div>
-          {status && <p className="text-xs text-stone-500">{status}</p>}
+          {status && <p className="text-xs text-[var(--text-muted)]">{status}</p>}
         </section>
 
-        <p className="text-xs text-stone-500">
+        <p className="text-xs text-[var(--text-muted)]">
           另：原文会在 30 天后被自动清空（衍生的分类数据保留）。详见{' '}
-          <a href="/privacy" className="underline">
+          <a
+            href="/privacy"
+            className="underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] hover:text-[var(--text)] transition-colors duration-150"
+          >
             隐私说明
           </a>
           。
         </p>
 
-        <a href="/" className="text-sm text-stone-500 underline self-start">
+        <a
+          href="/"
+          className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150 self-start"
+        >
           ← 回到首页
         </a>
       </div>

@@ -75,22 +75,22 @@ export default function ResultPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen flex items-center justify-center p-4 bg-stone-50">
-        <p className="text-rose-600 text-sm">{error}</p>
+      <main className="min-h-screen flex items-center justify-center px-6 py-10">
+        <p className="text-base text-[var(--bucket-catastrophic)]">{error}</p>
       </main>
     );
   }
   if (!data || !data.card_headline || !data.primary_action) {
     return (
-      <main className="min-h-screen flex items-center justify-center p-4 bg-stone-50">
-        <p className="text-stone-500 text-sm">解码中…</p>
+      <main className="min-h-screen flex items-center justify-center px-6 py-10">
+        <p className="font-handwriting-cn text-xl text-[var(--text-muted)]">解码中…</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 p-4">
-      <div className="mx-auto max-w-xl">
+    <main className="min-h-screen flex flex-col items-center px-6 py-10">
+      <div className="w-full max-w-2xl flex flex-col gap-8">
         <DecodeCard
           headline={data.card_headline}
           primaryAction={data.primary_action}
@@ -100,9 +100,7 @@ export default function ResultPage() {
           launchBusy={launchBusy}
         />
         {launchError && (
-          <div className="mt-3">
-            <RetryError message={launchError} onRetry={handleLaunch} busy={launchBusy} />
-          </div>
+          <RetryError message={launchError} onRetry={handleLaunch} busy={launchBusy} />
         )}
         <EmailOptIn
           sessionId={sessionId}

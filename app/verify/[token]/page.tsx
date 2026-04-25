@@ -58,23 +58,28 @@ export default function VerifyPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen bg-stone-50 flex items-center justify-center px-6">
-        <p className="text-stone-500 text-sm">{error}</p>
+      <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 gap-4">
+        <p className="font-handwriting-cn text-2xl md:text-3xl text-[var(--text)]">
+          链接失效
+        </p>
+        <p className="text-sm text-[var(--text-muted)]">{error}</p>
       </main>
     );
   }
   if (!payload) {
     return (
-      <main className="min-h-screen bg-stone-50 flex items-center justify-center px-6">
-        <p className="text-stone-500 text-sm">加载中…</p>
+      <main className="min-h-screen flex items-center justify-center px-6 py-10">
+        <p className="font-handwriting-cn text-xl text-[var(--text-muted)]">加载中…</p>
       </main>
     );
   }
   if (payload.responded_at) {
     return (
-      <main className="min-h-screen bg-stone-50 flex flex-col items-center justify-center px-6 gap-4">
-        <p className="text-stone-700 text-xl">这条已经回答过了。</p>
-        <p className="text-stone-500 text-sm">
+      <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 gap-4">
+        <p className="font-handwriting-cn text-2xl md:text-3xl text-[var(--text)]">
+          这条已经回答过了。
+        </p>
+        <p className="text-sm text-[var(--text-muted)]">
           你当时的回答是：{payload.did_happen ? '发生了' : '没发生'}
         </p>
       </main>
@@ -82,28 +87,31 @@ export default function VerifyPage() {
   }
   if (done) {
     return (
-      <main className="min-h-screen bg-stone-50 flex flex-col items-center justify-center px-6 gap-6">
-        <p className="text-stone-700 text-xl">收到。</p>
-        <a href="/" className="text-sm text-stone-500 underline">
+      <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 gap-8">
+        <p className="font-handwriting-cn text-3xl text-[var(--text)]">收到。</p>
+        <a
+          href="/"
+          className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150"
+        >
           回到首页
         </a>
       </main>
     );
   }
   return (
-    <main className="min-h-screen bg-stone-50 flex items-center justify-center px-6">
-      <div className="w-full max-w-md flex flex-col gap-6">
-        <p className="text-stone-700 text-lg text-center">
+    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12">
+      <div className="w-full max-w-md flex flex-col gap-8">
+        <p className="font-handwriting-cn text-2xl md:text-3xl text-center text-[var(--text)] leading-relaxed">
           你当时担心的那件事 —— 真的发生了吗？
         </p>
         <div className="flex gap-4 justify-center">
           <button
             type="button"
             onClick={() => setDidHappen(false)}
-            className={`rounded-full px-6 py-3 text-sm transition ${
+            className={`rounded-full px-6 py-3 text-sm transition-all duration-150 ${
               didHappen === false
-                ? 'bg-emerald-700 text-white'
-                : 'bg-white border border-stone-300 text-stone-700 hover:bg-stone-50'
+                ? 'bg-[var(--bucket-real)] text-white shadow-md'
+                : 'bg-white border-2 border-[var(--input-border)] text-[var(--text)] hover:border-[var(--input-border-focus)] hover:-translate-y-0.5'
             }`}
           >
             没发生
@@ -111,10 +119,10 @@ export default function VerifyPage() {
           <button
             type="button"
             onClick={() => setDidHappen(true)}
-            className={`rounded-full px-6 py-3 text-sm transition ${
+            className={`rounded-full px-6 py-3 text-sm transition-all duration-150 ${
               didHappen === true
-                ? 'bg-amber-700 text-white'
-                : 'bg-white border border-stone-300 text-stone-700 hover:bg-stone-50'
+                ? 'bg-[var(--bucket-catastrophic)] text-white shadow-md'
+                : 'bg-white border-2 border-[var(--input-border)] text-[var(--text)] hover:border-[var(--input-border-focus)] hover:-translate-y-0.5'
             }`}
           >
             发生了
@@ -125,13 +133,13 @@ export default function VerifyPage() {
           onChange={(e) => setNote(e.target.value)}
           placeholder="想记一句吗？（可选）"
           rows={2}
-          className="w-full rounded-md border border-stone-300 bg-white p-3 text-sm outline-none focus:border-stone-500"
+          className="w-full rounded-xl bg-white border-2 border-[var(--input-border)] focus:border-[var(--input-border-focus)] outline-none transition-colors duration-150 p-3 text-base leading-relaxed text-[var(--text)]"
         />
         <button
           type="button"
           onClick={handleSubmit}
           disabled={didHappen === null || busy}
-          className="self-center rounded-full bg-stone-800 px-6 py-2 text-sm text-white hover:bg-stone-700 disabled:opacity-40"
+          className="self-center rounded-full bg-[var(--accent)] text-white px-6 py-2 text-sm hover:bg-[var(--input-border-focus)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-40 disabled:hover:translate-y-0"
         >
           {busy ? '…' : '提交'}
         </button>

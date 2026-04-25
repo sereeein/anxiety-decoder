@@ -59,12 +59,18 @@ export default function LandingPage() {
   const c = copy ?? COPY_A;
 
   return (
-    <main className="min-h-screen bg-stone-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-xl">
-        <h1 className="mb-2 text-stone-700 text-lg">{c.headline}</h1>
-        {c.subheadline && (
-          <p className="mb-4 text-sm text-stone-500">{c.subheadline}</p>
-        )}
+    <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12">
+      <div className="w-full max-w-2xl flex flex-col gap-8">
+        <header className="flex flex-col gap-3 text-center">
+          <h1 className="font-handwriting-cn text-3xl md:text-4xl leading-tight text-[var(--text)]">
+            {c.headline}
+          </h1>
+          {c.subheadline && (
+            <p className="text-base text-[var(--text-muted)] max-w-md mx-auto">
+              {c.subheadline}
+            </p>
+          )}
+        </header>
         <WorryInput
           onSubmit={submit}
           busy={busy}
@@ -72,9 +78,7 @@ export default function LandingPage() {
           privacyLine={c.privacyLine}
         />
         {error && (
-          <div className="mt-3">
-            <RetryError message={error} onRetry={handleRetry} busy={busy} />
-          </div>
+          <RetryError message={error} onRetry={handleRetry} busy={busy} />
         )}
       </div>
       <PendingBanner />

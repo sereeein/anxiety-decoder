@@ -37,24 +37,27 @@ export default function CardDetailPage() {
 
   if (error) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-stone-50 p-4">
-        <p className="text-stone-500 text-sm">{error}</p>
+      <main className="min-h-screen flex items-center justify-center px-6 py-10">
+        <p className="font-handwriting-cn text-xl text-[var(--text-muted)]">{error}</p>
       </main>
     );
   }
   if (!data || !data.card_headline || !data.primary_action) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-stone-50 p-4">
-        <p className="text-stone-500 text-sm">加载中…</p>
+      <main className="min-h-screen flex items-center justify-center px-6 py-10">
+        <p className="font-handwriting-cn text-xl text-[var(--text-muted)]">加载中…</p>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 p-4">
-      <div className="mx-auto max-w-xl flex flex-col gap-4">
+    <main className="min-h-screen flex flex-col items-center px-6 py-12">
+      <div className="w-full max-w-2xl flex flex-col gap-8">
         <div className="flex items-center justify-between">
-          <a href="/history" className="text-sm text-stone-500 underline">
+          <a
+            href="/history"
+            className="text-sm text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150"
+          >
             ← 过往的解码
           </a>
           <ScreenshotButton
@@ -70,6 +73,12 @@ export default function CardDetailPage() {
             readOnly
           />
         </div>
+        <a
+          href="/"
+          className="self-center text-sm text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150"
+        >
+          回到首页
+        </a>
       </div>
     </main>
   );

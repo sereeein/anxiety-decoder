@@ -36,25 +36,36 @@ export default function HistoryPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-stone-50 p-4">
-      <div className="mx-auto max-w-xl flex flex-col gap-6">
-        <header className="flex items-center justify-between">
-          <h1 className="text-xl font-medium text-stone-800">过往的解码</h1>
-          <a href="/" className="text-sm text-stone-500 underline">
-            回到首页
-          </a>
+    <main className="min-h-screen flex flex-col items-center px-6 py-10">
+      <div className="w-full max-w-3xl flex flex-col gap-8">
+        <header className="flex flex-col gap-2">
+          <h1 className="font-handwriting-cn text-3xl md:text-4xl text-[var(--text)]">
+            过往的解码
+          </h1>
+          <p className="text-sm text-[var(--text-muted)]">
+            把每一次解码留下来，看清楚它们后来发生了没有。
+          </p>
         </header>
 
         <EvidenceStatsPanel />
 
-        {sessions === null && <p className="text-sm text-stone-500">加载中…</p>}
-        {sessions !== null && sessions.length === 0 && (
-          <p className="text-sm text-stone-500">
-            还没有解码记录 —— 做完第一次就会出现在这里。
+        {sessions === null && (
+          <p className="font-handwriting-cn text-lg text-[var(--text-muted)] text-center py-8">
+            加载中…
           </p>
         )}
+        {sessions !== null && sessions.length === 0 && (
+          <div className="flex flex-col items-center justify-center gap-3 py-12 text-center">
+            <p className="font-handwriting-cn text-2xl text-[var(--text)]">
+              还没有解码记录
+            </p>
+            <p className="text-sm text-[var(--text-muted)]">
+              做完第一次就会出现在这里。
+            </p>
+          </div>
+        )}
         {sessions !== null && sessions.length > 0 && (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {sessions.map((s) => (
               <HistoryCard
                 key={s.id}
@@ -71,8 +82,11 @@ export default function HistoryPage() {
           </div>
         )}
 
-        <footer className="mt-8 border-t border-stone-200 pt-4">
-          <a href="/settings/data" className="text-xs text-stone-500 underline">
+        <footer className="mt-4 border-t border-[var(--card-border)] pt-6">
+          <a
+            href="/settings/data"
+            className="text-xs text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150"
+          >
             数据管理 / 删除我的数据
           </a>
         </footer>
