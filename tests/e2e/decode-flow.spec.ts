@@ -4,6 +4,13 @@ import { test, expect } from '@playwright/test';
 test('full decode loop happy path', async ({ page }) => {
   test.setTimeout(60_000);
 
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'anxiety_decoder_fp',
+      '00000000-0000-0000-0000-000000000000',
+    );
+  });
+
   // Skip the opening ritual by clicking through.
   await page.goto('/');
   await page.click('button[aria-label="跳过"]', { timeout: 5_000 }).catch(() => {

@@ -4,6 +4,13 @@ import { test, expect } from '@playwright/test';
 test('history: navigate from landing → history → card detail', async ({ page }) => {
   test.setTimeout(90_000);
 
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'anxiety_decoder_fp',
+      '00000000-0000-0000-0000-000000000000',
+    );
+  });
+
   // Run a full decode first to seed a session.
   await page.goto('/');
   await page.click('button[aria-label="跳过"]', { timeout: 5_000 }).catch(() => {});
@@ -25,8 +32,8 @@ test('history: navigate from landing → history → card detail', async ({ page
   await page.getByRole('button', { name: /提交/ }).click();
   await expect(page.getByText(/收到/)).toBeVisible();
 
-  // Click "看看过往" to hit /history.
-  await page.getByRole('link', { name: /看看过往/ }).click();
+  // Navigate to /history via the global AppNav link ("过往").
+  await page.getByRole('link', { name: /^过往$/ }).click();
   await expect(page).toHaveURL(/\/history$/);
   await expect(page.getByText(/过往的解码/)).toBeVisible();
 

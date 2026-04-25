@@ -4,6 +4,13 @@ import { test, expect } from '@playwright/test';
 test('verify-flow: decode with catastrophic → token page → respond', async ({ page, request }) => {
   test.setTimeout(90_000);
 
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      'anxiety_decoder_fp',
+      '00000000-0000-0000-0000-000000000000',
+    );
+  });
+
   // 1. Run a full decode that's very likely to produce a catastrophic worry.
   await page.goto('/');
   await page.click('button[aria-label="跳过"]', { timeout: 5_000 }).catch(() => {});
