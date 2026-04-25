@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import DecodeCard, { type DecodeCardWorry } from '@/components/DecodeCard';
 import EmailOptIn from '@/components/EmailOptIn';
+import RetryError from '@/components/RetryError';
 import type { WorryCategory } from '@/lib/db/worryItems';
+import { retryOnce } from '@/lib/retry';
 
 interface SessionPayload {
   primary_action: string | null;
@@ -18,6 +20,7 @@ export default function ResultPage() {
   const router = useRouter();
   const [data, setData] = useState<SessionPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [launchError, setLaunchError] = useState<string | null>(null);
   const [launchBusy, setLaunchBusy] = useState(false);
 
   useEffect(() => {
@@ -57,11 +60,15 @@ export default function ResultPage() {
 
   const handleLaunch = async () => {
     setLaunchBusy(true);
+    setLaunchError(null);
     try {
-      await fetch(`/api/sessions/${sessionId}/launch`, { method: 'POST' });
-      router.push(`/decode/${sessionId}/wait`);
+      await retryOnce(async () => {
+        const res = await fetch(`/api/sessions/${sessionId}/launch`, { method: 'POST' });
+        if (!res.ok) throw new Error(`launch ${res.status}`);
+        router.push(`/decode/${sessionId}/wait`);
+      });
     } catch {
-      setError('AI 走神了，再来一次？');
+      setLaunchError('AI 走神了，再来一次？');
       setLaunchBusy(false);
     }
   };
@@ -92,6 +99,11 @@ export default function ResultPage() {
           onLaunch={handleLaunch}
           launchBusy={launchBusy}
         />
+        {launchError && (
+          <div className="mt-3">
+            <RetryError message={launchError} onRetry={handleLaunch} busy={launchBusy} />
+          </div>
+        )}
         <EmailOptIn
           sessionId={sessionId}
           hasCatastrophic={data.worries.some((w) => w.category === 'catastrophic')}

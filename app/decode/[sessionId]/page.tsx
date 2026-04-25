@@ -1,9 +1,11 @@
 // app/decode/[sessionId]/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import ConversationTurn from '@/components/ConversationTurn';
+import RetryError from '@/components/RetryError';
+import { retryOnce } from '@/lib/retry';
 
 interface UIMessage {
   role: 'user' | 'assistant';
@@ -19,6 +21,7 @@ export default function ConversationPage() {
   const [reply, setReply] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const lastReplyRef = useRef<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -38,38 +41,51 @@ export default function ConversationPage() {
     };
   }, [sessionId]);
 
-  const handleSend = async () => {
-    const trimmed = reply.trim();
-    if (!trimmed || busy) return;
+  const sendReply = async (trimmed: string, optimistic: boolean) => {
     setBusy(true);
     setError(null);
-    setMessages((m) => [...m, { role: 'user', content: trimmed }]);
-    setReply('');
+    lastReplyRef.current = trimmed;
+    if (optimistic) {
+      setMessages((m) => [...m, { role: 'user', content: trimmed }]);
+      setReply('');
+    }
 
     try {
-      const res = await fetch(`/api/sessions/${sessionId}/turns`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reply: trimmed }),
-      });
-      if (!res.ok) throw new Error(`turns ${res.status}`);
-      const data = (await res.json()) as
-        | { done: false; question: string }
-        | { done: true };
-      if (data.done) {
-        const decodeRes = await fetch(`/api/sessions/${sessionId}/decode`, {
+      await retryOnce(async () => {
+        const res = await fetch(`/api/sessions/${sessionId}/turns`, {
           method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reply: trimmed }),
         });
-        if (!decodeRes.ok) throw new Error(`decode ${decodeRes.status}`);
-        router.push(`/decode/${sessionId}/result`);
-      } else {
-        setMessages((m) => [...m, { role: 'assistant', content: data.question }]);
-        setBusy(false);
-      }
+        if (!res.ok) throw new Error(`turns ${res.status}`);
+        const data = (await res.json()) as
+          | { done: false; question: string }
+          | { done: true };
+        if (data.done) {
+          const decodeRes = await fetch(`/api/sessions/${sessionId}/decode`, {
+            method: 'POST',
+          });
+          if (!decodeRes.ok) throw new Error(`decode ${decodeRes.status}`);
+          router.push(`/decode/${sessionId}/result`);
+        } else {
+          setMessages((m) => [...m, { role: 'assistant', content: data.question }]);
+          setBusy(false);
+        }
+      });
     } catch {
       setError('AI 走神了，再来一次？');
       setBusy(false);
     }
+  };
+
+  const handleSend = async () => {
+    const trimmed = reply.trim();
+    if (!trimmed || busy) return;
+    await sendReply(trimmed, true);
+  };
+
+  const handleRetry = () => {
+    if (lastReplyRef.current) sendReply(lastReplyRef.current, false);
   };
 
   return (
@@ -98,7 +114,9 @@ export default function ConversationPage() {
           >
             {busy ? '处理中…' : '继续'}
           </button>
-          {error && <p className="text-sm text-rose-600">{error}</p>}
+          {error && (
+            <RetryError message={error} onRetry={handleRetry} busy={busy} />
+          )}
         </div>
       </div>
     </main>
