@@ -8,6 +8,7 @@ import * as detectAndAskFirst from '@/lib/prompts/detectAndAskFirst';
 import * as askFollowUpAgain from '@/lib/prompts/askFollowUpAgain';
 import * as classifyAndCompose from '@/lib/prompts/classifyAndCompose';
 import * as companionCopy from '@/lib/prompts/companionCopy';
+import * as verificationEmail from '@/lib/prompts/verificationEmail';
 import type { ConversationTurn } from '@/lib/prompts/askFollowUpAgain';
 
 const HAIKU_MAX_TOKENS = 256;
@@ -105,5 +106,25 @@ export async function callCompanionCopy(
     .join('')
     .trim();
   if (!text) throw new Error('Call 4 returned empty text');
+  return text;
+}
+
+/** Call 5 — compose the opening line of a verification email. */
+export async function callComposeVerificationEmail(
+  ctx: verificationEmail.VerificationEmailContext,
+): Promise<string> {
+  const claude = getClaudeClient();
+  const message = await claude.messages.create({
+    model: MODELS.HAIKU,
+    max_tokens: HAIKU_MAX_TOKENS,
+    system: verificationEmail.SYSTEM,
+    messages: [{ role: 'user', content: verificationEmail.buildUser(ctx) }],
+  });
+  const text = message.content
+    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+    .map((b) => b.text)
+    .join('')
+    .trim();
+  if (!text) throw new Error('Call 5 returned empty text');
   return text;
 }
