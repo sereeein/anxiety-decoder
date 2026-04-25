@@ -32,6 +32,7 @@ for (const line of envText.split('\n')) {
 const { callDetectAndAskFirst, callClassifyAndCompose } = await import(
   '../../lib/core/decodeEngine.ts'
 );
+const { needMoreInfo } = await import('../../lib/rules/needMoreInfo.ts');
 
 const samples = JSON.parse(
   readFileSync('tests/prompts/benchmarks/samples.json', 'utf8'),
@@ -48,6 +49,25 @@ for (const s of samples) {
   console.log(`Running ${s.id}...`);
   try {
     const { state, question } = await callDetectAndAskFirst(s.dump);
+
+    lines.push(`## ${s.id} · ${s.label}`);
+    lines.push('');
+    lines.push('**Dump:** ' + s.dump);
+    lines.push('');
+    lines.push('- **state:** `' + state + '`');
+    lines.push('- **question:** ' + question);
+
+    // If the dump alone fails needMoreInfo (too short, no task verb, or
+    // emotion-only), production would ask the user a follow-up before
+    // classifying. Skip classify for the benchmark to avoid testing on a
+    // synthetic reply — that would mask the real "AI hallucinates a task"
+    // failure mode for emotion-only inputs.
+    if (needMoreInfo(s.dump)) {
+      lines.push('- **classify:** _skipped — dump triggers needMoreInfo; production would ask the user another question first._');
+      lines.push('');
+      continue;
+    }
+
     // For classification, fake a minimal conversation with just the dump + one reply.
     const convo = [
       { role: 'user', content: s.dump },
@@ -59,12 +79,6 @@ for (const s of samples) {
       convo,
     );
 
-    lines.push(`## ${s.id} · ${s.label}`);
-    lines.push('');
-    lines.push('**Dump:** ' + s.dump);
-    lines.push('');
-    lines.push('- **state:** `' + state + '`');
-    lines.push('- **question:** ' + question);
     lines.push('- **headline:** ' + headline);
     lines.push('- **primary_action:** ' + primary_action);
     lines.push('- **worries:**');
