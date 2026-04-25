@@ -2,6 +2,7 @@
 'use client';
 
 import CategoryChip from '@/components/CategoryChip';
+import { useSparkleOnMobile } from '@/hooks/useSparkleOnMobile';
 import type { WorryCategory } from '@/lib/db/worryItems';
 
 export interface DecodeCardWorry {
@@ -32,9 +33,11 @@ export default function DecodeCard({
   const real = worries.filter((w) => w.category === 'real');
   const catastrophic = worries.filter((w) => w.category === 'catastrophic');
   const fog = worries.filter((w) => w.category === 'fog');
+  const { spark, portal } = useSparkleOnMobile();
 
   return (
     <article className="rounded-3xl bg-[var(--card-bg)] p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 border-2 border-[var(--card-border)] flex flex-col gap-6">
+      {portal}
       <header>
         <h2 className="font-handwriting-cn text-2xl text-[var(--text)] leading-snug">{headline}</h2>
       </header>
@@ -65,7 +68,10 @@ export default function DecodeCard({
         {!readOnly && (
           <button
             type="button"
-            onClick={onLaunch}
+            onClick={(e) => {
+              spark(e);
+              onLaunch?.();
+            }}
             disabled={launchBusy}
             className="self-start rounded-full bg-[var(--accent)] text-white px-6 py-2 text-sm hover:bg-[var(--input-border-focus)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-50 disabled:hover:translate-y-0"
           >

@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import CatFrame from '@/components/CatFrame';
+import { motion } from 'framer-motion';
 import { pickQuote, type PickedQuote } from '@/lib/core/quoteSelector';
 import { pushQuoteHistory, readQuoteHistory } from '@/lib/quoteHistory';
 
@@ -12,7 +12,7 @@ interface OpeningRitualProps {
 }
 
 const HOLD_MS = 1500;
-const FADE_MS = 500;
+const FADE_MS = 800; // longest leg: cat fades 600ms after a 200ms delay
 const REDUCED_HOLD_MS = 1000;
 
 export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
@@ -56,15 +56,10 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
     >
       {picked && (
         <>
-          <CatFrame
-            seed={1}
-            className={`w-48 md:w-64 transition-opacity ${
-              reducedMotion
-                ? 'opacity-100'
-                : phase === 'hold'
-                ? 'opacity-100 duration-700'
-                : 'opacity-0 duration-500'
-            }`}
+          <motion.div
+            animate={{ opacity: reducedMotion ? 1 : phase === 'fading' ? 0 : 1 }}
+            transition={{ duration: 0.6, delay: phase === 'fading' ? 0.2 : 0 }}
+            className="w-48 md:w-64"
           >
             <Image
               src="/illustrations/01-opening-ritual.png"
@@ -72,20 +67,16 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
               width={400}
               height={533}
               priority
-              className="cat-soft-mask w-full h-auto"
+              className="w-full h-auto"
             />
-          </CatFrame>
-          <p
-            className={`font-handwriting-cn max-w-md px-6 text-center text-3xl leading-relaxed transition-opacity ${
-              reducedMotion
-                ? 'opacity-100'
-                : phase === 'hold'
-                ? 'opacity-100 duration-700'
-                : 'opacity-0 duration-500'
-            }`}
+          </motion.div>
+          <motion.p
+            animate={{ opacity: reducedMotion ? 1 : phase === 'fading' ? 0 : 1 }}
+            transition={{ duration: 0.4 }}
+            className="font-handwriting-cn max-w-md px-6 text-center text-3xl leading-relaxed"
           >
             {picked.quote}
-          </p>
+          </motion.p>
         </>
       )}
       <span className="sr-only">跳过</span>

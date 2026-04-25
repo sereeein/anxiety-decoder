@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import CatFrame from '@/components/CatFrame';
+import { motion } from 'framer-motion';
 import { getOrCreateFingerprint } from '@/lib/fingerprint';
 import HistoryCard from '@/components/HistoryCard';
 import EvidenceStatsPanel from '@/components/EvidenceStats';
@@ -40,15 +40,13 @@ export default function HistoryPage() {
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-10">
       <div className="w-full max-w-3xl flex flex-col gap-8">
-        <CatFrame seed={5} className="w-full max-w-md mx-auto md:max-w-lg block">
-          <Image
-            src="/illustrations/05-history.png"
-            alt="一只白色小猫坐在三只玻璃罐旁边"
-            width={600}
-            height={400}
-            className="cat-soft-mask-banner w-full h-auto"
-          />
-        </CatFrame>
+        <Image
+          src="/illustrations/05-history.png"
+          alt="一只白色小猫坐在三只玻璃罐旁边"
+          width={600}
+          height={400}
+          className="w-full mx-auto h-auto"
+        />
         <header className="flex flex-col gap-2">
           <h1 className="font-handwriting-cn text-3xl md:text-4xl text-[var(--text)]">
             过往的解码
@@ -77,18 +75,28 @@ export default function HistoryPage() {
         )}
         {sessions !== null && sessions.length > 0 && (
           <div className="flex flex-col gap-4">
-            {sessions.map((s) => (
-              <HistoryCard
+            {sessions.map((s, index) => (
+              <motion.div
                 key={s.id}
-                id={s.id}
-                headline={s.card_headline}
-                primaryAction={s.primary_action}
-                createdAt={s.created_at}
-                realCount={s.real_count}
-                catastrophicCount={s.catastrophic_count}
-                fogCount={s.fog_count}
-                feedbackEmoji={s.feedback_emoji}
-              />
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.4,
+                  delay: index * 0.08,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <HistoryCard
+                  id={s.id}
+                  headline={s.card_headline}
+                  primaryAction={s.primary_action}
+                  createdAt={s.created_at}
+                  realCount={s.real_count}
+                  catastrophicCount={s.catastrophic_count}
+                  fogCount={s.fog_count}
+                  feedbackEmoji={s.feedback_emoji}
+                />
+              </motion.div>
             ))}
           </div>
         )}

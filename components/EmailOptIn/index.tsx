@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import DelaySelector from '@/components/DelaySelector';
+import { useSparkleOnMobile } from '@/hooks/useSparkleOnMobile';
 
 interface EmailOptInProps {
   sessionId: string;
@@ -15,6 +16,7 @@ export default function EmailOptIn({ sessionId, hasCatastrophic, onSubmitted }: 
   const [delayDays, setDelayDays] = useState(3);
   const [busy, setBusy] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const { spark, portal } = useSparkleOnMobile();
 
   if (dismissed) return null;
   if (!hasCatastrophic) return null;
@@ -36,6 +38,7 @@ export default function EmailOptIn({ sessionId, hasCatastrophic, onSubmitted }: 
 
   return (
     <aside className="rounded-3xl border-2 border-[var(--card-border)] bg-[var(--card-bg)] p-6 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-3 mt-4">
+      {portal}
       <p className="text-sm text-[var(--text)]">
         想让我 <span className="font-handwriting-en text-base text-[var(--accent)]">{delayDays} 天</span> 后问问你"那件事发生了吗"？留个邮箱就行。不留也可以。
       </p>
@@ -50,7 +53,10 @@ export default function EmailOptIn({ sessionId, hasCatastrophic, onSubmitted }: 
         />
         <button
           type="button"
-          onClick={handleSubmit}
+          onClick={(e) => {
+            spark(e);
+            handleSubmit();
+          }}
           disabled={busy || !email.trim()}
           className="rounded-full bg-[var(--accent)] text-white px-6 py-2 text-sm hover:bg-[var(--input-border-focus)] hover:-translate-y-0.5 active:scale-95 transition-all duration-150 disabled:opacity-40 disabled:hover:translate-y-0"
         >
