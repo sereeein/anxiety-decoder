@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import DecodeCard, { type DecodeCardWorry } from '@/components/DecodeCard';
 import EmailOptIn from '@/components/EmailOptIn';
@@ -91,6 +92,13 @@ export default function ResultPage() {
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-10">
       <div className="w-full max-w-2xl flex flex-col gap-8">
+        <Image
+          src="/illustrations/02-decode-card.png"
+          alt="一只白色小猫专注地看着三张小色卡"
+          width={400}
+          height={400}
+          className="w-56 md:w-64 h-auto mx-auto"
+        />
         <DecodeCard
           headline={data.card_headline}
           primaryAction={data.primary_action}

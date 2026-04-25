@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { pickQuote, type PickedQuote } from '@/lib/core/quoteSelector';
 import { pushQuoteHistory, readQuoteHistory } from '@/lib/quoteHistory';
 
@@ -50,20 +51,36 @@ export default function OpeningRitual({ onComplete }: OpeningRitualProps) {
       type="button"
       aria-label="跳过"
       onClick={onComplete}
-      className="fixed inset-0 flex items-center justify-center bg-[var(--bg)] text-[var(--text)] cursor-default"
+      className="fixed inset-0 flex flex-col items-center justify-center gap-8 bg-[var(--bg)] text-[var(--text)] cursor-default"
     >
       {picked && (
-        <p
-          className={`font-handwriting-cn max-w-md px-6 text-center text-3xl leading-relaxed transition-opacity ${
-            reducedMotion
-              ? 'opacity-100'
-              : phase === 'hold'
-              ? 'opacity-100 duration-700'
-              : 'opacity-0 duration-500'
-          }`}
-        >
-          {picked.quote}
-        </p>
+        <>
+          <Image
+            src="/illustrations/01-opening-ritual.png"
+            alt="一只小猫安静地盘腿坐着，闭着眼睛"
+            width={400}
+            height={533}
+            priority
+            className={`w-48 md:w-64 h-auto transition-opacity ${
+              reducedMotion
+                ? 'opacity-100'
+                : phase === 'hold'
+                ? 'opacity-100 duration-700'
+                : 'opacity-0 duration-500'
+            }`}
+          />
+          <p
+            className={`font-handwriting-cn max-w-md px-6 text-center text-3xl leading-relaxed transition-opacity ${
+              reducedMotion
+                ? 'opacity-100'
+                : phase === 'hold'
+                ? 'opacity-100 duration-700'
+                : 'opacity-0 duration-500'
+            }`}
+          >
+            {picked.quote}
+          </p>
+        </>
       )}
       <span className="sr-only">跳过</span>
     </button>

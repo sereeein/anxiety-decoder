@@ -1,10 +1,16 @@
 // app/not-found.tsx
+import Image from 'next/image';
+
 export default function NotFound() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 py-12 gap-6">
-      <p className="font-handwriting-en text-7xl md:text-8xl text-[var(--input-border)]">
-        404
-      </p>
+      <Image
+        src="/illustrations/06-not-found.png"
+        alt="一只黑色小猫望着天上的云"
+        width={400}
+        height={400}
+        className="w-48 md:w-56 h-auto"
+      />
       <p className="font-handwriting-cn text-2xl text-[var(--text)]">
         这里没有内容。
       </p>

@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { getOrCreateFingerprint } from '@/lib/fingerprint';
 import HistoryCard from '@/components/HistoryCard';
 import EvidenceStatsPanel from '@/components/EvidenceStats';
@@ -38,6 +39,13 @@ export default function HistoryPage() {
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-10">
       <div className="w-full max-w-3xl flex flex-col gap-8">
+        <Image
+          src="/illustrations/05-history.png"
+          alt="一只白色小猫坐在三只玻璃罐旁边"
+          width={600}
+          height={400}
+          className="w-full max-w-md mx-auto md:max-w-lg h-auto"
+        />
         <header className="flex flex-col gap-2">
           <h1 className="font-handwriting-cn text-3xl md:text-4xl text-[var(--text)]">
             过往的解码
