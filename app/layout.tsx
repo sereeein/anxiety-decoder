@@ -22,6 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className={`${caveat.variable} h-full antialiased`}>
+      <head>
+        <link
+          rel="preconnect"
+          href="https://cdn.jsdelivr.net"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.7.0/style.css"
+        />
+      </head>
       <body className="min-h-full flex flex-col">
         <MagicCursor />
         <AppNav />

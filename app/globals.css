@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
-/* LXGW WenKai Lite — handwriting-style Chinese font (~3MB, font-display: swap so page renders first) */
-@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-lite-webfont@1.7.0/style.css");
+/* LXGW WenKai Lite (Chinese handwriting font ~3MB) is loaded via <link> in app/layout.tsx
+ * to avoid PostCSS @import-ordering errors after Tailwind expansion. */
 
 :root {
   /* Sage + cream UI palette — illustrations are warm accents on this base */
