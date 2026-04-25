@@ -10,9 +10,21 @@ const DEBOUNCE_MS = 2000;
 interface WorryInputProps {
   onSubmit: (text: string) => void;
   busy: boolean;
+  placeholder?: string;
+  privacyLine?: string;
 }
 
-export default function WorryInput({ onSubmit, busy }: WorryInputProps) {
+const DEFAULT_PLACEHOLDER =
+  '把你现在脑子里所有担心倒出来。乱写也行，没关系。';
+const DEFAULT_PRIVACY_LINE =
+  '你写的东西只用来帮你解码这一次。原文 30 天后自动删除。';
+
+export default function WorryInput({
+  onSubmit,
+  busy,
+  placeholder = DEFAULT_PLACEHOLDER,
+  privacyLine = DEFAULT_PRIVACY_LINE,
+}: WorryInputProps) {
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -43,7 +55,7 @@ export default function WorryInput({ onSubmit, busy }: WorryInputProps) {
         onKeyDown={(e) => {
           if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') handleSubmit();
         }}
-        placeholder="把你现在脑子里所有担心倒出来。乱写也行，没关系。"
+        placeholder={placeholder}
         rows={6}
         disabled={busy}
         className="w-full rounded-md border border-stone-300 bg-white p-4 text-base leading-relaxed text-stone-800 outline-none focus:border-stone-500 disabled:opacity-50"
@@ -63,9 +75,7 @@ export default function WorryInput({ onSubmit, busy }: WorryInputProps) {
         ))}
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-xs text-stone-500">
-          你写的东西只用来帮你解码这一次。原文 30 天后自动删除。
-        </p>
+        <p className="text-xs text-stone-500">{privacyLine}</p>
         <button
           type="button"
           onClick={handleSubmit}
