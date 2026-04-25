@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-import CatFrame from '@/components/CatFrame';
 import DecodeCard, { type DecodeCardWorry } from '@/components/DecodeCard';
 import EmailOptIn from '@/components/EmailOptIn';
 import FlipCard from '@/components/FlipCard';
@@ -18,8 +17,6 @@ interface SessionPayload {
   worries: DecodeCardWorry[];
 }
 
-const AUTO_FLIP_DELAY_MS = 900;
-
 export default function ResultPage() {
   const { sessionId } = useParams<{ sessionId: string }>();
   const router = useRouter();
@@ -27,7 +24,6 @@ export default function ResultPage() {
   const [error, setError] = useState<string | null>(null);
   const [launchError, setLaunchError] = useState<string | null>(null);
   const [launchBusy, setLaunchBusy] = useState(false);
-  const [showCard, setShowCard] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -46,13 +42,6 @@ export default function ResultPage() {
       cancelled = true;
     };
   }, [sessionId]);
-
-  useEffect(() => {
-    if (data && data.card_headline && data.primary_action && !showCard) {
-      const t = setTimeout(() => setShowCard(true), AUTO_FLIP_DELAY_MS);
-      return () => clearTimeout(t);
-    }
-  }, [data, showCard]);
 
   const handleReclassify = async (worryId: string, next: WorryCategory) => {
     if (!data) return;
@@ -93,27 +82,10 @@ export default function ResultPage() {
       </main>
     );
   }
-
-  const catImage = (
-    <CatFrame seed={2} className="w-56 md:w-64">
-      <Image
-        src="/illustrations/02-decode-card.png"
-        alt="一只白色小猫专注地看着三张小色卡"
-        width={400}
-        height={400}
-        priority
-        className="cat-soft-mask w-full h-auto"
-      />
-    </CatFrame>
-  );
-
   if (!data || !data.card_headline || !data.primary_action) {
     return (
-      <main className="min-h-screen flex flex-col items-center justify-center px-6 py-10">
-        {catImage}
-        <p className="font-handwriting-cn text-xl text-[var(--text-muted)] mt-6">
-          解码中…
-        </p>
+      <main className="min-h-screen flex items-center justify-center px-6 py-10">
+        <CatShell hint="解码中…" />
       </main>
     );
   }
@@ -122,9 +94,8 @@ export default function ResultPage() {
     <main className="min-h-screen flex flex-col items-center px-6 py-10">
       <div className="w-full max-w-2xl flex flex-col gap-8">
         <FlipCard
-          showBack={showCard}
-          onToggle={() => setShowCard((s) => !s)}
-          front={catImage}
+          autoFlipAfter={1500}
+          front={<CatShell hint="点一下看你的解码 ↻" />}
           back={
             <DecodeCard
               headline={data.card_headline}
@@ -142,11 +113,27 @@ export default function ResultPage() {
         <EmailOptIn
           sessionId={sessionId}
           hasCatastrophic={data.worries.some((w) => w.category === 'catastrophic')}
-          onSubmitted={() => {
-            /* no-op; component hides itself */
-          }}
+          onSubmitted={() => { /* no-op; component hides itself */ }}
         />
       </div>
     </main>
+  );
+}
+
+function CatShell({ hint }: { hint: string }) {
+  return (
+    <div className="w-full bg-[var(--card-bg)] border-2 border-[var(--card-border)] rounded-3xl shadow-sm flex flex-col items-center justify-center gap-6 p-12 min-h-[420px]">
+      <Image
+        src="/illustrations/02-decode-card.png"
+        alt="一只白色小猫专注地看着三张小色卡"
+        width={400}
+        height={400}
+        className="w-48 md:w-56 h-auto"
+        priority
+      />
+      <p className="font-handwriting-cn text-sm text-[var(--text-muted)]">
+        {hint}
+      </p>
+    </div>
   );
 }

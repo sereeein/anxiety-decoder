@@ -1,37 +1,50 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 
 interface FlipCardProps {
-  showBack: boolean;
-  onToggle: () => void;
   front: ReactNode;
   back: ReactNode;
+  /** Auto-flip to back after this many ms once mounted. Omit to disable. */
+  autoFlipAfter?: number;
   className?: string;
 }
 
+/**
+ * 3D flip container. Back drives the natural height; front overlays absolute.
+ * Click anywhere on the front to flip to back. The back face has its own corner
+ * toggle button (rendered by the result page) so inner controls (DecodeCard
+ * primary button, CategoryChip dropdown) work without swallowing flip clicks.
+ */
 export default function FlipCard({
-  showBack,
-  onToggle,
   front,
   back,
+  autoFlipAfter,
   className = '',
 }: FlipCardProps) {
+  const [flipped, setFlipped] = useState(false);
+
+  useEffect(() => {
+    if (typeof autoFlipAfter !== 'number') return;
+    const t = setTimeout(() => setFlipped(true), autoFlipAfter);
+    return () => clearTimeout(t);
+  }, [autoFlipAfter]);
+
+  const toggle = () => setFlipped((f) => !f);
+
   return (
     <div
-      className={`relative ${className}`}
-      style={{ perspective: '1600px' }}
+      className={`relative w-full ${className}`}
+      style={{ perspective: '1400px' }}
     >
       <motion.div
-        animate={{ rotateY: showBack ? 180 : 0 }}
-        transition={{ duration: 0.85, ease: [0.4, 0, 0.2, 1] }}
-        style={{
-          transformStyle: 'preserve-3d',
-          position: 'relative',
-        }}
+        className="relative w-full"
+        style={{ transformStyle: 'preserve-3d' }}
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
       >
-        {/* Back face — in flow, drives container height */}
+        {/* Back drives container height, initially rotated away. */}
         <div
           style={{
             backfaceVisibility: 'hidden',
@@ -40,40 +53,44 @@ export default function FlipCard({
           }}
         >
           {back}
+          <FlipBackButton onClick={toggle} label="再看一眼小猫" />
         </div>
-        {/* Front face — absolute over back, centered */}
-        <div
-          className="absolute inset-0 flex items-center justify-center"
+        {/* Front overlays. Click anywhere flips to back. */}
+        <button
+          type="button"
+          onClick={toggle}
+          className="absolute inset-0 w-full block text-left"
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
           }}
+          aria-label="点击查看你的解码结果"
         >
           {front}
-        </div>
+        </button>
       </motion.div>
-
-      {/* Flip toggle — sits outside the rotating element so it stays static */}
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-label={showBack ? '翻回猫图' : '翻到解码卡'}
-        className="absolute top-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--text)] shadow-sm transition-all duration-150 hover:bg-[var(--accent)] hover:text-white hover:-translate-y-0.5 active:scale-95"
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M2 8a6 6 0 0 1 10.5-4M14 8a6 6 0 0 1-10.5 4" />
-          <path d="M12 2v3h-3M4 14v-3h3" />
-        </svg>
-      </button>
     </div>
+  );
+}
+
+function FlipBackButton({
+  onClick,
+  label,
+}: {
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+      className="absolute top-4 right-4 text-xs text-[var(--text-muted)] hover:text-[var(--text)] underline underline-offset-2 decoration-[var(--input-border)] hover:decoration-[var(--text)] transition-colors duration-150"
+      aria-label={label}
+    >
+      ↻ {label}
+    </button>
   );
 }
