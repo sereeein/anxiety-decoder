@@ -65,17 +65,25 @@ export async function GET(req: Request) {
       1,
       Math.round((Date.now() - new Date(createdAt).getTime()) / (24 * 60 * 60 * 1000)),
     );
-    const opener = await callComposeVerificationEmail({
+    const quote = await callComposeVerificationEmail({
       worryContent,
       daysElapsed,
     });
     const url = buildVerifyUrl(appUrl, v.token);
 
+    const subject = `给 ${daysElapsed} 天前的自己一个回复`;
+    const html = [
+      `<p style="margin:0 0 16px 0">那天你写："${quote}"</p>`,
+      `<p style="margin:0 0 16px 0">${daysElapsed} 天过去了。发生了或没发生，说什么都行 —— 这一题会进记忆库，是你给那天的自己的一个回应。</p>`,
+      `<p style="margin:0 0 24px 0"><a href="${url}" style="color:#1f2937;text-decoration:underline">回去看那天 →</a></p>`,
+      `<p style="color:#9ca3af;font-size:12px;margin:0">—— 焦虑解码器</p>`,
+    ].join('');
+
     await resend.emails.send({
       from: FROM_ADDRESS,
       to: email,
-      subject: '一个 30 秒的问题',
-      html: `<p>${opener}</p><p><a href="${url}">回来看一眼</a></p>`,
+      subject,
+      html,
     });
     await markSent(v.id);
     sent++;
