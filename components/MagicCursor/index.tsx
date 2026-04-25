@@ -38,11 +38,12 @@ export default function MagicCursor() {
 
   return (
     <>
+      {/* Hotspot is the star center at SVG (22, 10) — wand extends down-left from the click point. */}
       <div
         className="fixed pointer-events-none z-[9999]"
         style={{
-          left: pos.x - 6,
-          top: pos.y - 26,
+          left: pos.x - 22,
+          top: pos.y - 10,
           transition: 'transform 40ms linear',
         }}
         aria-hidden="true"

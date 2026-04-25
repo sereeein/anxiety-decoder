@@ -4,14 +4,14 @@
  * to avoid PostCSS @import-ordering errors after Tailwind expansion. */
 
 :root {
-  /* Sage + cream UI palette — illustrations are warm accents on this base */
-  --bg: #F5F2EB;
-  --bg-soft: #EFEAE0;
+  /* Morandi 豆绿 (dōulǜ sage) UI palette — warm cat illustrations as accents on this cool base */
+  --bg: #DCE3CB;
+  --bg-soft: #CED4BA;
   --text: #2E3A35;
-  --text-muted: #7A8480;
+  --text-muted: #6E7A6F;
   --card-bg: #FFFFFF;
-  --card-border: #DCE1DB;
-  --input-border: #C7CEC8;
+  --card-border: #C4CAA9;
+  --input-border: #B9C2A2;
   --input-border-focus: #4A6B5C;
 
   --bucket-real: #4A6B5C;
