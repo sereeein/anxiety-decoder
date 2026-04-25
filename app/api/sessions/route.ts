@@ -1,7 +1,7 @@
 // app/api/sessions/route.ts
 import { NextResponse } from 'next/server';
 import { getOrCreateUserByFingerprint } from '@/lib/db/users';
-import { createSession } from '@/lib/db/sessions';
+import { createSession, listSessionsByFingerprint } from '@/lib/db/sessions';
 import { callDetectAndAskFirst } from '@/lib/core/decodeEngine';
 
 export const runtime = 'nodejs';
@@ -41,4 +41,14 @@ export async function POST(req: Request) {
     state,
     question,
   });
+}
+
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const fingerprint = url.searchParams.get('fingerprint');
+  if (!fingerprint) {
+    return NextResponse.json({ error: 'fingerprint required' }, { status: 400 });
+  }
+  const sessions = await listSessionsByFingerprint(fingerprint);
+  return NextResponse.json({ sessions });
 }
