@@ -1,6 +1,6 @@
 // app/api/sessions/[id]/route.ts
 import { NextResponse } from 'next/server';
-import { getSession } from '@/lib/db/sessions';
+import { deleteSession, getSession } from '@/lib/db/sessions';
 import { listBySession } from '@/lib/db/worryItems';
 
 export const runtime = 'nodejs';
@@ -30,4 +30,13 @@ export async function GET(
       was_manually_edited: w.was_manually_edited,
     })),
   });
+}
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  const { id } = await params;
+  await deleteSession(id);
+  return NextResponse.json({ ok: true });
 }
