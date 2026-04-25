@@ -748,4 +748,4 @@ https://anxiety-decoder.vercel.app
 
 ## 项目仓库
 
-[GitHub URL]
+https://github.com/sereeein/anxiety-decoder
