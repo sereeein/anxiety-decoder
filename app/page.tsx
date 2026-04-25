@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import OpeningRitual from '@/components/OpeningRitual';
 import WorryInput from '@/components/WorryInput';
+import PendingBanner from '@/components/PendingBanner';
 import { getOrCreateFingerprint } from '@/lib/fingerprint';
 
 export default function LandingPage() {
@@ -43,6 +44,7 @@ export default function LandingPage() {
         <WorryInput onSubmit={handleSubmit} busy={busy} />
         {error && <p className="mt-3 text-sm text-rose-600">{error}</p>}
       </div>
+      <PendingBanner />
     </main>
   );
 }
