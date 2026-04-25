@@ -14,9 +14,10 @@ interface DecodeCardProps {
   headline: string;
   primaryAction: string;
   worries: DecodeCardWorry[];
-  onReclassify: (worryId: string, next: WorryCategory) => void;
-  onLaunch: () => void;
-  launchBusy: boolean;
+  onReclassify?: (worryId: string, next: WorryCategory) => void;
+  onLaunch?: () => void;
+  launchBusy?: boolean;
+  readOnly?: boolean;
 }
 
 export default function DecodeCard({
@@ -26,6 +27,7 @@ export default function DecodeCard({
   onReclassify,
   onLaunch,
   launchBusy,
+  readOnly,
 }: DecodeCardProps) {
   const real = worries.filter((w) => w.category === 'real');
   const catastrophic = worries.filter((w) => w.category === 'catastrophic');
@@ -43,10 +45,16 @@ export default function DecodeCard({
           {real.map((w) => (
             <li key={w.id} className="flex items-start gap-2 text-sm text-stone-800">
               <span className="flex-1">{w.content}</span>
-              <CategoryChip
-                category={w.category}
-                onReclassify={(next) => onReclassify(w.id, next)}
-              />
+              {readOnly ? (
+                <span className="rounded-full border border-stone-300 bg-white px-2 py-1 text-xs text-stone-700">
+                  {w.category === 'real' ? '🟢 真问题' : w.category === 'catastrophic' ? '🟡 灾难化' : '⚪ 雾'}
+                </span>
+              ) : (
+                <CategoryChip
+                  category={w.category}
+                  onReclassify={(next) => onReclassify?.(w.id, next)}
+                />
+              )}
             </li>
           ))}
         </ul>
@@ -54,14 +62,16 @@ export default function DecodeCard({
           <p className="text-xs text-emerald-700 mb-1">现在 5 分钟内能做的：</p>
           <p className="text-sm text-stone-800">{primaryAction}</p>
         </div>
-        <button
-          type="button"
-          onClick={onLaunch}
-          disabled={launchBusy}
-          className="self-start rounded-full bg-emerald-700 px-5 py-2 text-sm text-white hover:bg-emerald-600 disabled:opacity-50"
-        >
-          {launchBusy ? '准备中…' : '现在做 5 分钟'}
-        </button>
+        {!readOnly && (
+          <button
+            type="button"
+            onClick={onLaunch}
+            disabled={launchBusy}
+            className="self-start rounded-full bg-emerald-700 px-5 py-2 text-sm text-white hover:bg-emerald-600 disabled:opacity-50"
+          >
+            {launchBusy ? '准备中…' : '现在做 5 分钟'}
+          </button>
+        )}
       </section>
 
       {catastrophic.length > 0 && (
@@ -71,10 +81,16 @@ export default function DecodeCard({
             {catastrophic.map((w) => (
               <li key={w.id} className="flex items-start gap-2 text-xs text-stone-700">
                 <span className="flex-1">{w.content}</span>
-                <CategoryChip
-                  category={w.category}
-                  onReclassify={(next) => onReclassify(w.id, next)}
-                />
+                {readOnly ? (
+                  <span className="rounded-full border border-stone-300 bg-white px-2 py-1 text-xs text-stone-700">
+                    {w.category === 'real' ? '🟢 真问题' : w.category === 'catastrophic' ? '🟡 灾难化' : '⚪ 雾'}
+                  </span>
+                ) : (
+                  <CategoryChip
+                    category={w.category}
+                    onReclassify={(next) => onReclassify?.(w.id, next)}
+                  />
+                )}
               </li>
             ))}
           </ul>
@@ -88,10 +104,16 @@ export default function DecodeCard({
             {fog.map((w) => (
               <li key={w.id} className="flex items-start gap-2 text-xs text-stone-600">
                 <span className="flex-1">{w.content}</span>
-                <CategoryChip
-                  category={w.category}
-                  onReclassify={(next) => onReclassify(w.id, next)}
-                />
+                {readOnly ? (
+                  <span className="rounded-full border border-stone-300 bg-white px-2 py-1 text-xs text-stone-700">
+                    {w.category === 'real' ? '🟢 真问题' : w.category === 'catastrophic' ? '🟡 灾难化' : '⚪ 雾'}
+                  </span>
+                ) : (
+                  <CategoryChip
+                    category={w.category}
+                    onReclassify={(next) => onReclassify?.(w.id, next)}
+                  />
+                )}
               </li>
             ))}
           </ul>
